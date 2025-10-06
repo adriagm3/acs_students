@@ -1,16 +1,19 @@
-package baseNoStates;
+package baseWithStates;
 
-import baseNoStates.requests.RequestReader;
+import baseWithStates.doorstates.DoorState;
+import baseWithStates.requests.RequestReader;
 import org.json.JSONObject;
 
 
 public class Door {
   private final String id;
   private boolean closed; // physically
+  private DoorState state;
 
   public Door(String id) {
     this.id = id;
     closed = true;
+    this.state = new UnlockedState(this);  //estat inicial
   }
 
   public void processRequest(RequestReader request) {
@@ -42,6 +45,11 @@ public class Door {
         }
         break;
       case Actions.LOCK:
+        if (closed){
+
+        } else {
+          System.out.println("Can't lock door " + id + " because it's opened");
+        }
         // TODO
         // fall through
       case Actions.UNLOCK:
@@ -66,7 +74,11 @@ public class Door {
   }
 
   public String getStateName() {
-    return "unlocked";
+    return state.getName();
+  }
+
+  public void setState(DoorState state) {
+    this.state = state;
   }
 
   @Override

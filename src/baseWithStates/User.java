@@ -1,4 +1,4 @@
-package baseNoStates;
+package baseWithStates;
 
 public class User {
   private final String name;
