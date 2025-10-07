@@ -13,7 +13,7 @@ public class Unlocked extends DoorState {
   @Override
   public void open() {
     if (door.isClosed()) {
-      door.doAction(Actions.OPEN);
+      door.setClosed(false);
       System.out.println("Door " + door.getId() + " opened.");
     } else {
       System.out.println("Door " + door.getId() + " is already open.");
