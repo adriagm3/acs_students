@@ -14,6 +14,14 @@ public class Door {
   private Space to;
 
 
+
+  public Door(String id) {
+    this.id = id;
+    closed = true;//estat inicial
+    this.state = new Unlocked(this);
+  }
+
+
   public Door(String id, Space from, Space to) {
     this.id = id;
     closed = true;//estat inicial
