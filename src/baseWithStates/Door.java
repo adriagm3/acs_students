@@ -10,11 +10,17 @@ public class Door {
   private final String id;
   private boolean closed; // physically
   private DoorState state;
+  private Space from;
+  private Space to;
 
-  public Door(String id) {
+
+  public Door(String id, Space from, Space to) {
     this.id = id;
     closed = true;//estat inicial
     this.state = new Unlocked(this);
+
+    this.from = from; //espai d'on es pot accedir a la porta
+    this.to = to; //espai a on es pot accedir a la porta
   }
   public void setClosed(boolean tancar){
     closed = tancar;
@@ -83,4 +89,9 @@ public class Door {
     json.put("closed", closed);
     return json;
   }
+
+  public Space getFrom() { return from; }
+
+  public Space getTo()  { return to; }
+
 }
