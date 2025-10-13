@@ -6,7 +6,7 @@ abstract AbstractCollection
 interface List
 interface Collection
 
-List <|-- AbstractList
+List <|-- miaumiau
 Collection <|-- AbstractCollection
 
 Collection <|- List
