@@ -3,7 +3,7 @@ package baseWithStates;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class Area {
+public abstract class Area {
 
   protected String id;
   protected String name;

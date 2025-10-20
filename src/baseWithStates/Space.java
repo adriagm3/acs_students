@@ -12,8 +12,6 @@ public class Space extends Area {
         this.doors = new ArrayList<>(); //creem l'array de portes de l'espai respectiu
     }
 
-
-
     public void addDoor(Door door) {
         doors.add(door);
     }

@@ -10,8 +10,8 @@ public class Door {
   private final String id;
   private boolean closed; // physically
   private DoorState state;
-  private Space from;
-  private Space to;
+  private Area from;
+  private Area to;
 
 
 
@@ -22,7 +22,7 @@ public class Door {
   }
 
 
-  public Door(String id, Space from, Space to) {
+  public Door(String id, Area from, Area to) {
     this.id = id;
     closed = true;//estat inicial
     this.state = new Unlocked(this);
@@ -98,8 +98,8 @@ public class Door {
     return json;
   }
 
-  public Space getFrom() { return from; }
+  public Area getFrom() { return from; }
 
-  public Space getTo()  { return to; }
+  public Area getTo()  { return to; }
 
 }
