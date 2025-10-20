@@ -98,7 +98,15 @@ public class Door {
     return json;
   }
 
-  public Space getFrom() { return from; }
+  public String getFromSpace() {
+      return from != null ? from.getName() : "";
+  }
+  public String getToSpace() {
+      return to != null ? to.getName() : "";
+  }
+
+
+    public Space getFrom() { return from; }
 
   public Space getTo()  { return to; }
 

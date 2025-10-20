@@ -1,52 +1,83 @@
 package baseWithStates;
 
-import java.util.ArrayList;
+import java.time.*;
+import java.util.*;
 
 public final class DirectoryUsers {
-  private static final ArrayList<User> users = new ArrayList<>();
+    private static final ArrayList<User> users = new ArrayList<>();
 
-  public static void makeUsers() {
-    //TODO: make user groups according to the specifications in the comments, because
-    // now all are the same
+    public static void makeUsers() {
+        int currentYear = LocalDate.now().getYear();
 
-    // users without any privilege, just to keep temporally users instead of deleting them,
-    // this is to withdraw all permissions but still to keep user data to give back
-    // permissions later
-    users.add(new User("Bernat", "12345"));
-    users.add(new User("Blai", "77532"));
+        // ─── GRUPS ─────────────────────────────────────────────
 
-    // employees :
-    // Sep. 1 this year to Mar. 1 next year
-    // week days 9-17h
-    // just shortly unlock
-    // ground floor, floor1, exterior, stairs (this, for all), that is, everywhere but the parking
-    users.add(new User("Ernest", "74984"));
-    users.add(new User("Eulalia", "43295"));
+        UserGroup noPrivileges = new UserGroup(
+                "NoPrivileges",
+                Set.of(),                // cap acció
+                Set.of(),                // cap espai
+                LocalDate.of(currentYear, 1, 1),
+                LocalDate.of(currentYear, 12, 31),
+                Set.of(DayOfWeek.values()),
+                LocalTime.MIN,
+                LocalTime.MAX
+        );
 
-    // managers :
-    // Sep. 1 this year to Mar. 1 next year
-    // week days + saturday, 8-20h
-    // all actions
-    // all spaces
-    users.add(new User("Manel", "95783"));
-    users.add(new User("Marta", "05827"));
+        UserGroup employees = new UserGroup(
+                "Employees",
+                Set.of("UNLOCK_SHORTLY"),
+                Set.of("ground", "floor1", "exterior", "stairs"),
+                LocalDate.of(currentYear, 9, 1),
+                LocalDate.of(currentYear + 1, 3, 1),
+                Set.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY),
+                LocalTime.of(9, 0),
+                LocalTime.of(17, 0)
+        );
 
-    // admin :
-    // always=Jan. 1 this year to 2100
-    // all days of the week
-    // all actions
-    // all spaces
-    users.add(new User("Ana", "11343"));
-  }
+        UserGroup managers = new UserGroup(
+                "Managers",
+                Set.of("ALL"),
+                Set.of("ALL"),
+                LocalDate.of(currentYear, 9, 1),
+                LocalDate.of(currentYear + 1, 3, 1),
+                Set.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY),
+                LocalTime.of(8, 0),
+                LocalTime.of(20, 0)
+        );
 
-  public static User findUserByCredential(String credential) {
-    for (User user : users) {
-      if (user.getCredential().equals(credential)) {
-        return user;
-      }
+        UserGroup admin = new UserGroup(
+                "Admin",
+                Set.of("ALL"),
+                Set.of("ALL"),
+                LocalDate.of(currentYear, 1, 1),
+                LocalDate.of(2100, 1, 1),
+                Set.of(DayOfWeek.values()),
+                LocalTime.MIN,
+                LocalTime.MAX
+        );
+
+        // ─── USUARIS ───────────────────────────────────────────
+
+        users.add(new User("Bernat", "12345", noPrivileges));
+        users.add(new User("Blai", "77532", noPrivileges));
+
+        users.add(new User("Ernest", "74984", employees));
+        users.add(new User("Eulalia", "43295", employees));
+
+        users.add(new User("Manel", "95783", managers));
+        users.add(new User("Marta", "05827", managers));
+
+        users.add(new User("Ana", "11343", admin));
     }
-    System.out.println("user with credential " + credential + " not found");
-    return null; // otherwise we get a Java error
-  }
 
+    public static User findUserByCredential(String credential) {
+        for (User user : users) {
+            if (user.getCredential().equals(credential)) {
+                return user;
+            }
+        }
+        System.out.println("user with credential " + credential + " not found");
+        return null;
+    }
 }
