@@ -91,14 +91,30 @@ public class RequestReader implements Request {
   // the result is put into the request object plus, if not authorized, why not,
   // only for testing
   private void authorize(User user, Door door) {
-    if (user == null) {
-      authorized = false;
-      addReason("user doesn't exists");
-    } else {
-      //TODO: get the who, where, when and what in order to decide, and if not
-      // authorized add the reason(s)
-      authorized = true;
-    }
+      if (user == null) {
+          authorized = false;
+          addReason("user doesn't exist");
+          return;
+      }
+
+      // Guarda el nom per als logs/toString
+      this.userName = user.toString();
+
+      // Recuperem el grup de l'usuari
+      var group = user.getGroup();
+
+      boolean timeOk = group.canSendRequests(now);
+      boolean fromOk = group.canBeInSpace(door.getFromSpace());
+      boolean toOk = group.canBeInSpace(door.getToSpace());
+      boolean actionOk = group.canDoAction(action);
+
+      if (!timeOk) addReason("outside allowed time interval");
+      if (!fromOk) addReason("cannot access from-space " + door.getFromSpace());
+      if (!toOk) addReason("cannot access to-space " + door.getToSpace());
+      if (!actionOk) addReason("action " + action + " not allowed");
+
+      authorized = timeOk && fromOk && toOk && actionOk;
   }
+
 }
 

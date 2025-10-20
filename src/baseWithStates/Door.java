@@ -64,6 +64,9 @@ public class Door {
       case Actions.UNLOCK:
         state.unlock();
         break;
+      case Actions.UNLOCK_SHORTLY:
+        state.unlockShortly();
+        break;
       default:
         System.out.println("Unknown action: " + action);
     }
@@ -98,7 +101,19 @@ public class Door {
     return json;
   }
 
+<<<<<<< HEAD
   public Area getFrom() { return from; }
+=======
+  public String getFromSpace() {
+      return from != null ? from.getName() : "";
+  }
+  public String getToSpace() {
+      return to != null ? to.getName() : "";
+  }
+
+
+    public Space getFrom() { return from; }
+>>>>>>> 4408cca01777d3c97d510dbd6ff0acf964e9f563
 
   public Area getTo()  { return to; }
 
