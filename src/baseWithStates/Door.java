@@ -64,6 +64,9 @@ public class Door {
       case Actions.UNLOCK:
         state.unlock();
         break;
+      case Actions.UNLOCK_SHORTLY:
+        state.unlockShortly();
+        break;
       default:
         System.out.println("Unknown action: " + action);
     }

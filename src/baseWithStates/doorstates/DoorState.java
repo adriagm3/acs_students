@@ -30,4 +30,8 @@ public abstract class DoorState {
   public void unlock() {
     System.out.println("Action UNLOCK not allowed in state " + name);
   }
+
+  public void unlockShortly() {
+    System.out.println("Action UNLOCK not allowed in state " + name);
+  }
 }
