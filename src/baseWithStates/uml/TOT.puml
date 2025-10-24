@@ -1,0 +1,186 @@
+@startuml
+
+'========================
+' Paquets
+'========================
+package baseWithStates {
+    class Door {
+        - id: String
+        - closed: boolean
+        - state: DoorState
+        - from: Area
+        - to: Area
+        + processRequest(request: RequestReader)
+        + doAction(action: String)
+        + isClosed(): boolean
+        + setClosed(tancar: boolean)
+        + setState(newState: DoorState)
+        + getStateName(): String
+        + getFromSpace(): String
+        + getToSpace(): String
+        + toJson(): JSONObject
+    }
+
+    abstract class Area {
+        - id: String
+        - name: String
+        - parent: Partition
+        + getDoorsGivingAccess(): ArrayList<Door>
+        + getSpaces(): ArrayList<Space>
+        + findAreaById(id: String): Area
+    }
+
+    class Partition {
+        - subAreas: List<Area>
+        + addSubArea(area: Area)
+        + getDoorsGivingAccess(): ArrayList<Door>
+        + getSpaces(): ArrayList<Space>
+        + findAreaById(id: String): Area
+    }
+
+    class Space {
+        - doors: ArrayList<Door>
+        + addDoor(door: Door)
+        + getDoorsGivingAccess(): ArrayList<Door>
+        + getSpaces(): ArrayList<Space>
+        + findAreaById(id: String): Area
+    }
+
+    class User {
+        - name: String
+        - credential: String
+        - group: UserGroup
+        + getCredential(): String
+        + getGroup(): UserGroup
+    }
+
+    class UserGroup {
+        - name: String
+        - allowedActions: Set<String>
+        - allowedSpaces: Set<String>
+        - startDate: LocalDate
+        - endDate: LocalDate
+        - allowedWeekdays: Set<DayOfWeek>
+        - startTime: LocalTime
+        - endTime: LocalTime
+        + canDoAction(action: String): boolean
+        + canBeInSpace(spaceId: String): boolean
+        + canSendRequests(now: LocalDateTime): boolean
+    }
+
+    class Clock {
+        - date: LocalDateTime
+        - period: int
+        - observers: List<ClockObserver>
+        + addObserver(obs: ClockObserver)
+        + removeObserver(obs: ClockObserver)
+        + getDate(): LocalDateTime
+        + getPeriod(): int
+    }
+}
+
+package baseWithStates.doorstates {
+    abstract class DoorState {
+        - door: Door
+        - name: String
+        + open()
+        + close()
+        + lock()
+        + unlock()
+        + unlockShortly()
+        + getName(): String
+    }
+
+    class Locked {
+        + unlock()
+        + unlockShortly()
+        + open()
+        + close()
+    }
+
+    class Unlocked {
+        + open()
+        + close()
+        + lock()
+    }
+
+    class UnlockedShortly {
+        + tick()
+        + getName(): String
+    }
+
+    class Propped {
+        + getName(): String
+    }
+
+    class States {
+        + LOCKED
+        + UNLOCKED
+    }
+
+    class Actions {
+        + LOCK
+        + UNLOCK
+        + OPEN
+        + CLOSE
+    }
+}
+
+package baseWithStates.requests {
+    interface Request {
+        + process()
+        + answerToJson(): JSONObject
+    }
+
+    class RequestReader {
+        - credential: String
+        - action: String
+        - doorId: String
+        - authorized: boolean
+        - reasons: ArrayList<String>
+        - doorStateName: String
+        + process()
+        + answerToJson(): JSONObject
+    }
+
+    class RequestArea {
+        - credential: String
+        - action: String
+        - areaId: String
+        - requests: ArrayList<RequestReader>
+        + process()
+        + answerToJson(): JSONObject
+    }
+
+    class RequestRefresh {
+        - jsonsDoors: ArrayList<JSONObject>
+        + process()
+        + answerToJson(): JSONObject
+    }
+}
+
+'========================
+' Relacions
+'========================
+DoorState <|-- Locked
+DoorState <|-- Unlocked
+DoorState <|-- UnlockedShortly
+DoorState <|-- Propped
+
+Door o-- DoorState
+Door o-- Area : from
+Door o-- Area : to
+UnlockedShortly ..|> ClockObserver
+Clock "1" o-- "*" ClockObserver
+
+Partition --|> Area
+Space --|> Area
+
+Door "1" o-- "*" RequestReader
+RequestReader ..> Door
+RequestArea ..> RequestReader
+RequestRefresh ..> Door
+
+User "1" o-- UserGroup
+
+@enduml

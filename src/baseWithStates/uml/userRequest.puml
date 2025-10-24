@@ -1,0 +1,30 @@
+@startuml
+package "Users & Requests" {
+    class User {
+        +name: String
+        +credential: String
+        +group: UserGroup
+    }
+
+    class UserGroup {
+        +name: String
+        +canDoAction()
+        +canBeInSpace()
+        +canSendRequests()
+    }
+
+    interface Request {
+        +process()
+        +answerToJson()
+    }
+
+    class RequestReader
+    class RequestArea
+    class RequestRefresh
+
+    User "1" o-- "1" UserGroup
+    RequestArea ..> RequestReader
+    RequestRefresh ..> Door
+    RequestReader ..> Door
+}
+@enduml

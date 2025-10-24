@@ -1,0 +1,35 @@
+@startuml
+package "Doors & States" {
+    class Door {
+        +id: String
+        +closed: boolean
+        +state: DoorState
+        +processRequest()
+        +doAction()
+        +getStateName()
+        +isClosed()
+    }
+
+    abstract class DoorState {
+        +open()
+        +close()
+        +lock()
+        +unlock()
+        +unlockShortly()
+        +getName(): String
+    }
+
+    class Locked
+    class Unlocked
+    class UnlockedShortly
+    class Propped
+    class Actions
+    class States
+
+    DoorState <|-- Locked
+    DoorState <|-- Unlocked
+    DoorState <|-- UnlockedShortly
+    DoorState <|-- Propped
+    Door o-- DoorState
+}
+@enduml

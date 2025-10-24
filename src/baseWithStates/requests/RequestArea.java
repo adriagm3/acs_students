@@ -6,87 +6,87 @@ import baseWithStates.Door;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import baseWithStates.Area;
-
-//import java.awt.geom.Area;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-
 public class RequestArea implements Request {
-  private final String credential;
-  private final String action;
-  private final String areaId;
-  private final LocalDateTime now;
-  private ArrayList<RequestReader> requests = new ArrayList<>();
+    // Aquesta classe implementa la interfície Request per gestionar accions sobre àrees.
+    // Una "àrea" és un conjunt de portes, i aquesta request crea requests individuals
+    // per cada porta dins l'àrea per executar l'acció corresponent.
 
+    private final String credential; // credencial de l'usuari que fa la request
+    private final String action;     // acció a realitzar: LOCK o UNLOCK
+    private final String areaId;     // identificador de l'àrea objectiu
+    private final LocalDateTime now; // moment en què es fa la request
+    private ArrayList<RequestReader> requests = new ArrayList<>();
+    // llista de requests per a cada porta dins l'àrea
 
-  public RequestArea(String credential, String action, LocalDateTime now, String areaId) {
-    this.credential = credential;
-    this.areaId = areaId;
-    assert action.equals(Actions.LOCK) || action.equals(Actions.UNLOCK)
-            : "invalid action " + action + " for an area request";
-    this.action = action;
-    this.now = now;
-  }
+    public RequestArea(String credential, String action, LocalDateTime now, String areaId) {
+        this.credential = credential;
+        this.areaId = areaId;
 
-  public String getAction() {
-    return action;
-  }
-
-  @Override
-  public JSONObject answerToJson() {
-    JSONObject json = new JSONObject();
-    json.put("action", action);
-    json.put("areaId", areaId);
-    JSONArray jsonRequests = new JSONArray();
-    for (RequestReader rd : requests) {
-      jsonRequests.put(rd.answerToJson());
-    }
-    json.put("requestsDoors", jsonRequests);
-    json.put("todo", "request areas not yet implemented");
-    return json;
-  }
-
-  @Override
-  public String toString() {
-    String requestsDoorsStr;
-    if (requests.size() == 0) {
-      requestsDoorsStr = "";
-    } else {
-      requestsDoorsStr = requests.toString();
-    }
-    return "Request{"
-            + "credential=" + credential
-            + ", action=" + action
-            + ", now=" + now
-            + ", areaId=" + areaId
-            + ", requestsDoors=" + requestsDoorsStr
-            + "}";
-  }
-
-  // processing the request of an area is creating the corresponding door requests and forwarding
-  // them to all of its doors. For some it may be authorized and action will be done, for others
-  // it won't be authorized and nothing will happen to them.
-  public void process() {
-    // commented out until Area, Space and Partition are implemented
-    // make the door requests and put them into the area request to be authorized later and
-    // processed later
-    Area area = DirectoryAreas.findAreaById(areaId);
-    // an Area is a Space or a Partition
-    if (area != null) {
-      // is null when from the app we click on an action but no place is selected because
-      // there (flutter) I don't control like I do in javascript that all the parameters are provided
-
-      // Make all the door requests, one for each door in the area, and process them.
-      // Look for the doors in the spaces of this area that give access to them.
-      for (Door door : area.getDoorsGivingAccess()) {
-        RequestReader requestReader = new RequestReader(credential, action, now, door.getId());
-        requestReader.process();
-        // after process() the area request contains the answer as the answer
-        // to each individual door request, that is read by the simulator/Flutter app
-        requests.add(requestReader);
-      }
+        // Comprovem que l'acció sigui vàlida per una àrea (només LOCK o UNLOCK)
+        assert action.equals(Actions.LOCK) || action.equals(Actions.UNLOCK)
+                : "invalid action " + action + " for an area request";
+        this.action = action;
+        this.now = now;
     }
 
-  }
+    public String getAction() {
+        return action;
+    }
+
+    @Override
+    public JSONObject answerToJson() {
+        // Retorna la resposta de la request en format JSON
+        JSONObject json = new JSONObject();
+        json.put("action", action);
+        json.put("areaId", areaId);
+
+        JSONArray jsonRequests = new JSONArray();
+        for (RequestReader rd : requests) {
+            // Afegim a l'array JSON les respostes de cada porta
+            jsonRequests.put(rd.answerToJson());
+        }
+        json.put("requestsDoors", jsonRequests);
+        json.put("todo", "request areas not yet implemented");
+        // Nota: encara hi ha funcionalitat pendent
+        return json;
+    }
+
+    @Override
+    public String toString() {
+        // Representació textual de la request per debugging/logging
+        String requestsDoorsStr;
+        if (requests.size() == 0) {
+            requestsDoorsStr = "";
+        } else {
+            requestsDoorsStr = requests.toString();
+        }
+        return "Request{"
+                + "credential=" + credential
+                + ", action=" + action
+                + ", now=" + now
+                + ", areaId=" + areaId
+                + ", requestsDoors=" + requestsDoorsStr
+                + "}";
+    }
+
+    // Mètode principal que processa la request sobre l'àrea
+    public void process() {
+        // Busquem l'àrea per ID
+        Area area = DirectoryAreas.findAreaById(areaId);
+        // pot ser null si no s'ha seleccionat cap àrea des de l'app
+
+        if (area != null) {
+            // Per cada porta dins l'àrea que dóna accés a l'espai:
+            for (Door door : area.getDoorsGivingAccess()) {
+                // Creem una request individual per cada porta
+                RequestReader requestReader = new RequestReader(credential, action, now, door.getId());
+                requestReader.process(); // processem la request de la porta
+                // afegim la resposta de la porta a la llista de respostes de l'àrea
+                requests.add(requestReader);
+            }
+        }
+    }
 }
