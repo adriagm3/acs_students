@@ -79,7 +79,7 @@ public class RequestArea implements Request {
         // pot ser null si no s'ha seleccionat cap àrea des de l'app
 
         if (area != null) {
-            // Per cada porta dins l'àrea que dóna accés a l'espai:
+            // Per cada porta dins l'àrea que dona accés a l'espai:
             for (Door door : area.getDoorsGivingAccess()) {
                 // Creem una request individual per cada porta
                 RequestReader requestReader = new RequestReader(credential, action, now, door.getId());

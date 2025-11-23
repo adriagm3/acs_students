@@ -4,7 +4,7 @@ import baseWithStates.Door;
 
 public class Propped extends DoorState {
     // Aquesta classe representa l'estat "Propped" d'una porta.
-    // "Propped" vol dir que la porta està oberta però subjecta o sostenida (no completament desbloquejada ni tancada).
+    // "Propped" vol dir que la porta està oberta, però subjecta o sostenida (no completament desbloquejada ni tancada).
 
     public Propped(Door door) {
         super(door);

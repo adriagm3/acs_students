@@ -13,7 +13,7 @@ public class Clock {
 
     public static synchronized Clock getInstance() {
         if (instance == null) {
-            instance = new Clock(); // període per defecte: 1s
+            instance = new Clock(); // període per defecte: 1 s
         }
         return instance;
     }

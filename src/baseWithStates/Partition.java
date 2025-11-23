@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Partition extends Area {
     // Aquesta classe representa una partició dins del sistema, que pot contenir subàrees
-    // Les particions són àrees que agrupen altres àrees o espais
+    // Les particions són àrees que agrupen altres àrees o espais.
 
     private final List<Area> subAreas; // Llista de subàrees dins d'aquesta partició
 

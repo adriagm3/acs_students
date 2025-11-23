@@ -12,7 +12,7 @@ public class RequestRefresh implements Request {
     // actual de les portes i dels lectors.
 
     private final ArrayList<JSONObject> jsonsDoors = new ArrayList<>();
-    // Llista de JSONs de cada porta que s'omplirà en process()
+    // Llista de JSON de cada porta que s'omplirà en process()
 
     @Override
     public JSONObject answerToJson() {
