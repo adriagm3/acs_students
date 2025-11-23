@@ -7,7 +7,7 @@ public class Partition extends Area {
     // Aquesta classe representa una partició dins del sistema, que pot contenir subàrees
     // Les particions són àrees que agrupen altres àrees o espais
 
-    private List<Area> subAreas; // Llista de subàrees dins d'aquesta partició
+    private final List<Area> subAreas; // Llista de subàrees dins d'aquesta partició
 
     public Partition(String id, String name, Partition parent) {
         super(id, name, parent);

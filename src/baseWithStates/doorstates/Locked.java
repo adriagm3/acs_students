@@ -16,27 +16,27 @@ public class Locked extends DoorState {
     @Override
     public void unlock() {
         door.setState(new Unlocked(door));
-        logger.info("Door {} " + door.getId() + " unlocked.");
+        logger.info("Door unlocked.");
     }
 
     @Override
     public void unlockShortly() {
         door.setState(new UnlockedShortly(door));
-        logger.info("Door " + door.getId() + " unlocked shortly.");
+        logger.info("Door unlocked shortly.");
     }
 
     @Override
     public void open() {
-        logger.warn("Cannot open door " + door.getId() + " because it's locked.");
+        logger.warn("Cannot open door because it's locked.");
     }
 
     @Override
     public void close() {
         if (!door.isClosed()) {
             door.setClosed(true);
-            logger.info("Door " + door.getId() + " closed (but remains locked).");
+            logger.info("Door closed (but remains locked).");
         } else {
-            logger.warn("Door " + door.getId() + " is already closed.");
+            logger.warn("Door is already closed.");
         }
     }
 }

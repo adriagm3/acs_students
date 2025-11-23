@@ -8,7 +8,7 @@ public abstract class DoorState {
 
     protected static final Logger logger = LoggerFactory.getLogger(DoorState.class);
 
-    protected Door door;
+    protected final Door door;
     protected String name;
 
     public DoorState(Door door) {
@@ -20,22 +20,22 @@ public abstract class DoorState {
     }
 
     public void open() {
-        logger.warn("Action OPEN not allowed in state " + name);
+        logger.warn("Action OPEN not allowed in state");
     }
 
     public void close() {
-        logger.warn("Action CLOSE not allowed in state " + name);
+        logger.warn("Action CLOSE not allowed in state");
     }
 
     public void lock() {
-        logger.warn("Action LOCK not allowed in state " + name);
+        logger.warn("Action LOCK not allowed in state");
     }
 
     public void unlock() {
-        logger.warn("Action UNLOCK not allowed in state " + name);
+        logger.warn("Action UNLOCK not allowed in state");
     }
 
     public void unlockShortly() {
-        logger.warn("Action UNLOCK not allowed in state " + name);
+        logger.warn("Action UNLOCK not allowed in state ");
     }
 }

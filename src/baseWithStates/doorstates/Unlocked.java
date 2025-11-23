@@ -4,8 +4,6 @@ import baseWithStates.Door;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.lang.String.valueOf;
-
 public class Unlocked extends DoorState {
 
     private static final Logger logger = LoggerFactory.getLogger(Unlocked.class);
@@ -19,9 +17,9 @@ public class Unlocked extends DoorState {
     public void open() {
         if (door.isClosed()) {
             door.setClosed(false);
-            logger.info("Door " + door.getId() + " opened.");
+            logger.info("Door opened.");
         } else {
-            logger.warn("Door " + door.getId() + " is already open.");
+            logger.warn("Door is already open.");
         }
     }
 
@@ -29,9 +27,9 @@ public class Unlocked extends DoorState {
     public void close() {
         if (!door.isClosed()) {
             door.setClosed(true);
-            logger.info("Door " + door.getId() + " closed.");
+            logger.info("Door closed.");
         } else {
-            logger.warn("Door " + door.getId() + " is already closed.");
+            logger.warn("Door is already closed.");
         }
     }
 
@@ -39,9 +37,9 @@ public class Unlocked extends DoorState {
     public void lock() {
         if (door.isClosed()) {
             door.setState(new Locked(door));
-            logger.info("Door " + door.getId() + " locked.");
+            logger.info("Door locked.");
         } else {
-            logger.warn("Cannot lock door " + door.getId() + " while it's open.");
+            logger.warn("Cannot lock door while it's open.");
         }
     }
 }

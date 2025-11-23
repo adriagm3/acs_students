@@ -22,7 +22,7 @@ public class Door {
         this.id = id;
         this.closed = true;
         this.state = new Unlocked(this);
-        logger.info("Door " + id + " created (default areas).");
+        logger.info("Door created (default areas).");
     }
 
     // Constructor amb àrees
@@ -32,29 +32,29 @@ public class Door {
         this.state = new Unlocked(this);
         this.from = from;
         this.to = to;
-        logger.info("Door " + id + " created between " + from.getName() + "none" + "and " + to.getName() + "none" + ".");
+        logger.info("Door created between noneand none.");
     }
 
     public void setClosed(boolean tancar) {
         this.closed = tancar;
-        logger.debug("Door " + id + " setClosed -> " + tancar);
+        logger.debug("Door setClosed");
     }
 
     public void setState(DoorState newState) {
         this.state = newState;
-        logger.info("Door " + id + " changed state -> " + newState.getName());
+        logger.info("Door changed state");
     }
 
     public void processRequest(RequestReader request) {
 
         if (!request.isAuthorized()) {
-            logger.warn("Unauthorized request on door " + id + ".");
+            logger.warn("Unauthorized request on door.");
             request.setDoorStateName(getStateName());
             return;
         }
 
         String action = request.getAction();
-        logger.info("Door " + id + " processing action " + action +".");
+        logger.info("Door processing action.");
 
         doAction(action);
 
@@ -84,7 +84,7 @@ public class Door {
                 break;
 
             default:
-                logger.error("Door " + id + " received unknown action " + action +".");
+                logger.error("Door received unknown action.");
         }
     }
 

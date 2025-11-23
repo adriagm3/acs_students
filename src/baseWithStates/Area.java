@@ -6,9 +6,9 @@ public abstract class Area {
     // Classe abstracta que representa una "àrea" dins del sistema.
     // Una àrea pot ser un conjunt d'espais o particions, i conté portes que en donen accés.
 
-    protected String id;        // Identificador únic de l'àrea
-    protected String name;      // Nom descriptiu de l'àrea
-    protected Partition parent; // Referència a la partició pare (no implementada encara)
+    protected final String id;        // Identificador únic de l'àrea
+    protected final String name;      // Nom descriptiu de l'àrea
+    protected final Partition parent; // Referència a la partició pare (no implementada encara)
 
     public Area(String id, String name, Partition parent) {
         this.id = id;

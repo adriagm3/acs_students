@@ -6,7 +6,7 @@ public class Space extends Area {
     // Aquesta classe representa un espai físic dins del sistema.
     // Cada espai pot tenir un conjunt de portes que donen accés a altres espais.
 
-    private ArrayList<Door> doors; // Llista de portes dins d'aquest espai
+    private final ArrayList<Door> doors; // Llista de portes dins d'aquest espai
 
     public Space(String id, String name, Partition parent) {
         super(id, name, parent);

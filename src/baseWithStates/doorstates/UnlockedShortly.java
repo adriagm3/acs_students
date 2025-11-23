@@ -20,11 +20,6 @@ public class UnlockedShortly extends DoorState implements ClockObserver {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
     public void tick() {
         elapsedSeconds++;
         if (elapsedSeconds >= TIMEOUT_SECONDS) {
@@ -32,10 +27,10 @@ public class UnlockedShortly extends DoorState implements ClockObserver {
 
             if (door.isClosed()) {
                 door.setState(new Locked(door));
-                logger.info("Door " + door.getId() + " auto-locked after timeout.");
+                logger.info("Door auto-locked after timeout.");
             } else {
                 door.setState(new Propped(door));
-                logger.info("Door " + door.getId() + " is propped after timeout.");
+                logger.info("Door is propped after timeout.");
             }
         }
     }
@@ -44,9 +39,9 @@ public class UnlockedShortly extends DoorState implements ClockObserver {
     public void open() {
         if (door.isClosed()) {
             door.setClosed(false);
-            logger.info("Door " + door.getId() + " opened (unlocked shortly).");
+            logger.info("Door opened (unlocked shortly).");
         } else {
-            logger.info("Door " + door.getId() + " is already open.");
+            logger.info("Door is already open.");
         }
     }
 
@@ -54,9 +49,9 @@ public class UnlockedShortly extends DoorState implements ClockObserver {
     public void close() {
         if (!door.isClosed()) {
             door.setClosed(true);
-            logger.info("Door " + door.getId() + " closed (unlocked shortly).");
+            logger.info("Door closed (unlocked shortly).");
         } else {
-            logger.info("Door " + door.getId() + " is already closed.");
+            logger.info("Door is already closed.");
         }
     }
 
@@ -64,21 +59,21 @@ public class UnlockedShortly extends DoorState implements ClockObserver {
     public void lock() {
         if (door.isClosed()) {
             door.setState(new Locked(door));
-            logger.info("Door " + door.getId() + " locked.");
+            logger.info("Door locked.");
         } else {
-            logger.warn("Cannot lock door " + door.getId() + " while it's open.");
+            logger.warn("Cannot lock door while it's open.");
         }
     }
 
     @Override
     public void unlock() {
         elapsedSeconds = 0;
-        logger.info("Door " + door.getId() + " already unlocked shortly; timer reset.");
+        logger.info("Door already unlocked shortly; timer reset.");
     }
 
     @Override
     public void unlockShortly() {
         elapsedSeconds = 0;
-        logger.info("Door " + door.getId() + " unlocked shortly again; timer reset.");
+        logger.info("Door unlocked shortly again; timer reset.");
     }
 }

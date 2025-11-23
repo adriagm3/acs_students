@@ -3,7 +3,7 @@ package baseWithStates.doorstates;
 
 public class Actions {
     // Classe que serveix com a contenidor de constants relacionades amb les accions possibles sobre una porta.
-    // No té atributs ni mètodes de instància; només proporciona noms constants que representen accions.
+    // No té atributs ni mètodes d'instància; només proporciona noms constants que representen accions.
 
     public static final String LOCK = "lock";
     // Constant per representar l'acció de tancar la porta amb clau o bloqueig.

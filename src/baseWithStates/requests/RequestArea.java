@@ -18,7 +18,7 @@ public class RequestArea implements Request {
     private final String action;     // acció a realitzar: LOCK o UNLOCK
     private final String areaId;     // identificador de l'àrea objectiu
     private final LocalDateTime now; // moment en què es fa la request
-    private ArrayList<RequestReader> requests = new ArrayList<>();
+    private final ArrayList<RequestReader> requests = new ArrayList<>();
     // llista de requests per a cada porta dins l'àrea
 
     public RequestArea(String credential, String action, LocalDateTime now, String areaId) {
@@ -58,7 +58,7 @@ public class RequestArea implements Request {
     public String toString() {
         // Representació textual de la request per debugging/logging
         String requestsDoorsStr;
-        if (requests.size() == 0) {
+        if (requests.isEmpty()) {
             requestsDoorsStr = "";
         } else {
             requestsDoorsStr = requests.toString();

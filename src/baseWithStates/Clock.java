@@ -13,7 +13,7 @@ public class Clock {
 
     public static synchronized Clock getInstance() {
         if (instance == null) {
-            instance = new Clock(1); // període per defecte: 1s
+            instance = new Clock(); // període per defecte: 1s
         }
         return instance;
     }
@@ -27,8 +27,8 @@ public class Clock {
     private final List<ClockObserver> observers = new ArrayList<>();
 
     // Constructor privat → obligatori per Singleton
-    private Clock(int period) {
-        this.period = period;
+    private Clock() {
+        this.period = 1;
         this.timer = new Timer(true); // true = daemon thread
         this.date = LocalDateTime.now();
         start();
