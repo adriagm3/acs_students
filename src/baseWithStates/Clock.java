@@ -5,56 +5,77 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Clock {
-    // Singleton que representa un rellotge del sistema que envia "ticks" cada segon a tots els observadors.
 
-    private static final Clock instance = new Clock(1); // instància única del Clock
-    private LocalDateTime date;                           // data i hora actual del rellotge
-    private final Timer timer;                            // Timer de Java per programar tasques periòdiques
-    private final int period;                             // període de cada tick en segons
-    private final List<ClockObserver> observers = new ArrayList<>(); // llista d'observadors registrats
+    // ───────────────────────────────
+    // Singleton
+    // ───────────────────────────────
+    private static Clock instance;
 
+    public static synchronized Clock getInstance() {
+        if (instance == null) {
+            instance = new Clock(1); // període per defecte: 1s
+        }
+        return instance;
+    }
+
+    // ───────────────────────────────
+    // Atributs
+    // ───────────────────────────────
+    private LocalDateTime date;
+    private final Timer timer;
+    private final int period;
+    private final List<ClockObserver> observers = new ArrayList<>();
+
+    // Constructor privat → obligatori per Singleton
     private Clock(int period) {
         this.period = period;
-        this.timer = new Timer();
-        start(); // comença a enviar ticks
+        this.timer = new Timer(true); // true = daemon thread
+        this.date = LocalDateTime.now();
+        start();
     }
 
-    public static Clock getInstance() {
-        return instance; // retorna la instància singleton
-    }
-
+    // ───────────────────────────────
+    // Rellotge i observadors
+    // ───────────────────────────────
     private void start() {
-        // Crea una tasca que s'executa periòdicament segons el period definit
         TimerTask repeatedTask = new TimerTask() {
             @Override
             public void run() {
-                date = LocalDateTime.now(); // actualitza la data
-                notifyObservers();          // notifica tots els observadors
+                date = LocalDateTime.now();
+                notifyObservers();
             }
         };
-        timer.scheduleAtFixedRate(repeatedTask, 0, 1000 * period); // executa cada "period" segons
+
+        timer.scheduleAtFixedRate(repeatedTask, 0, period * 1000L);
+    }
+
+    // Opcional: per tests/unitats
+    public void stop() {
+        timer.cancel();
     }
 
     private void notifyObservers() {
-        // Copia la llista d'observadors per evitar ConcurrentModificationException
         for (ClockObserver obs : new ArrayList<>(observers)) {
-            obs.tick(); // crida el mètode tick() de cada observador
+            obs.tick();
         }
     }
 
     public void addObserver(ClockObserver obs) {
-        observers.add(obs); // afegeix un observador
+        observers.add(obs);
     }
 
     public void removeObserver(ClockObserver obs) {
-        observers.remove(obs); // elimina un observador
+        observers.remove(obs);
     }
 
+    // ───────────────────────────────
+    // Getters
+    // ───────────────────────────────
     public LocalDateTime getDate() {
-        return date; // retorna la data/hora actual
+        return date;
     }
 
     public int getPeriod() {
-        return period; // retorna el període en segons
+        return period;
     }
 }

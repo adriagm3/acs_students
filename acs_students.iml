@@ -12,5 +12,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="eduworks.json.ld" level="project" />
     <orderEntry type="library" name="json" level="project" />
+    <orderEntry type="library" name="github.mcpat.slf4j.slf4cldc.api" level="project" />
+    <orderEntry type="library" name="ch.qos.logback.classic" level="project" />
+    <orderEntry type="library" name="ch.qos.logback.core" level="project" />
   </component>
 </module>

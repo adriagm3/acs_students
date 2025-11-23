@@ -1,5 +1,7 @@
 package baseWithStates;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -23,6 +25,16 @@ public final class DirectoryDoors {
     Door d9 = new Door("D9"); // corridor, IT
 
     allDoors = new ArrayList<>(Arrays.asList(d1, d2, d3, d4, d5, d6, d7, d8, d9));
+
+      try {
+          System.out.println("→ Escriure fitxer DirectoryDoors.txt…");
+          FileWriter writer = new FileWriter("DirectoryDoors.txt");
+          writer.write("Hola!"); // Després ja hi posarem el contingut real
+          writer.close();
+          System.out.println("✔ Fitxer escrit");
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
   }
 
   public static Door findDoorById(String id) {

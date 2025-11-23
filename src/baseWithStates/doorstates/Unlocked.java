@@ -1,48 +1,47 @@
 package baseWithStates.doorstates;
 
-import baseWithStates.Actions;
 import baseWithStates.Door;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static java.lang.String.valueOf;
 
 public class Unlocked extends DoorState {
-    // Aquesta classe representa l'estat "Unlocked" (desbloquejada) d'una porta.
-    // Aquí la porta pot obrir-se i tancar-se, però només es pot bloquejar si està tancada.
+
+    private static final Logger logger = LoggerFactory.getLogger(Unlocked.class);
 
     public Unlocked(Door door) {
         super(door);
-        this.name = States.UNLOCKED; // Assignem el nom de l'estat.
+        this.name = States.UNLOCKED;
     }
 
     @Override
     public void open() {
-        // Obre la porta si està tancada.
         if (door.isClosed()) {
-            door.setClosed(false); // Actualitzem l'estat de la porta.
-            System.out.println("Door " + door.getId() + " opened."); // Missatge informatiu.
+            door.setClosed(false);
+            logger.info("Door " + door.getId() + " opened.");
         } else {
-            System.out.println("Door " + door.getId() + " is already open."); // Si ja està oberta, només mostrem missatge.
+            logger.warn("Door " + door.getId() + " is already open.");
         }
     }
 
     @Override
     public void close() {
-        // Tanca la porta si està oberta.
         if (!door.isClosed()) {
-            door.setClosed(true); // Actualitzem l'estat de la porta.
-            System.out.println("Door " + door.getId() + " closed."); // Missatge informatiu.
+            door.setClosed(true);
+            logger.info("Door " + door.getId() + " closed.");
         } else {
-            System.out.println("Door " + door.getId() + " is already closed."); // Si ja està tancada, només missatge.
+            logger.warn("Door " + door.getId() + " is already closed.");
         }
     }
 
     @Override
     public void lock() {
-        // Bloqueja la porta només si està tancada.
         if (door.isClosed()) {
-            door.setState(new Locked(door)); // Canvia l'estat de la porta a Locked.
-            System.out.println("Door " + door.getId() + " locked."); // Missatge confirmant bloqueig.
+            door.setState(new Locked(door));
+            logger.info("Door " + door.getId() + " locked.");
         } else {
-            System.out.println("Cannot lock door " + door.getId() + " while it's open.");
-            // Si la porta està oberta, no es pot bloquejar i es mostra missatge.
+            logger.warn("Cannot lock door " + door.getId() + " while it's open.");
         }
     }
 }

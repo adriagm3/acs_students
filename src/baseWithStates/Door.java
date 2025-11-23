@@ -2,74 +2,89 @@ package baseWithStates;
 
 import baseWithStates.doorstates.DoorState;
 import baseWithStates.requests.RequestReader;
-import org.json.JSONObject;
 import baseWithStates.doorstates.Unlocked;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Door {
-    // Aquesta classe representa una porta del sistema.
-    // Conté l'estat actual, si està tancada o oberta, i les àrees d'origen i destinació.
+
+    private static final Logger logger = LoggerFactory.getLogger(Door.class);
 
     private final String id;       // Identificador únic de la porta
-    private boolean closed;        // Estat físic de la porta (tancada/oberta)
-    private DoorState state;       // Estat de la porta (Locked, Unlocked, etc.)
-    private Area from;             // Espai d'origen per accedir a la porta
-    private Area to;               // Espai de destinació al travessar la porta
+    private boolean closed;        // Estat físic de la porta
+    private DoorState state;       // Estat lògic (Locked, Unlocked, Propped...)
+    private Area from;             // Àrea d'origen
+    private Area to;               // Àrea de destinació
 
-    // Constructor bàsic sense àrees
+    // Constructor bàsic
     public Door(String id) {
         this.id = id;
-        closed = true;             // Inicialment tancada
-        this.state = new Unlocked(this); // Inicialment desbloquejada
+        this.closed = true;
+        this.state = new Unlocked(this);
+        logger.info("Door " + id + " created (default areas).");
     }
 
     // Constructor amb àrees
     public Door(String id, Area from, Area to) {
         this.id = id;
-        closed = true;
+        this.closed = true;
         this.state = new Unlocked(this);
         this.from = from;
         this.to = to;
+        logger.info("Door " + id + " created between " + from.getName() + "none" + "and " + to.getName() + "none" + ".");
     }
 
     public void setClosed(boolean tancar) {
-        closed = tancar; // Canvia l'estat físic de la porta
+        this.closed = tancar;
+        logger.debug("Door " + id + " setClosed -> " + tancar);
     }
 
     public void setState(DoorState newState) {
-        state = newState; // Canvia l'estat de la porta
+        this.state = newState;
+        logger.info("Door " + id + " changed state -> " + newState.getName());
     }
 
     public void processRequest(RequestReader request) {
-        // La porta processa la request perquè coneix el seu estat i si està tancada/oberta
-        if (request.isAuthorized()) {
-            String action = request.getAction();
-            doAction(action); // Executa l'acció
-        } else {
-            System.out.println("not authorized"); // Usuari no autoritzat
+
+        if (!request.isAuthorized()) {
+            logger.warn("Unauthorized request on door " + id + ".");
+            request.setDoorStateName(getStateName());
+            return;
         }
-        request.setDoorStateName(getStateName()); // Guarda l'estat actual de la porta a la request
+
+        String action = request.getAction();
+        logger.info("Door " + id + " processing action " + action +".");
+
+        doAction(action);
+
+        request.setDoorStateName(getStateName());
     }
 
     private void doAction(String action) {
-        // Executa l'acció segons l'estat de la porta
         switch (action) {
             case Actions.OPEN:
                 state.open();
                 break;
+
             case Actions.CLOSE:
                 state.close();
                 break;
+
             case Actions.LOCK:
                 state.lock();
                 break;
+
             case Actions.UNLOCK:
                 state.unlock();
                 break;
+
             case Actions.UNLOCK_SHORTLY:
                 state.unlockShortly();
                 break;
+
             default:
-                System.out.println("Unknown action: " + action);
+                logger.error("Door " + id + " received unknown action " + action +".");
         }
     }
 
@@ -87,15 +102,14 @@ public class Door {
 
     @Override
     public String toString() {
-        return "Door{"
-                + "id='" + id + '\''
-                + ", closed=" + closed
-                + ", state=" + getStateName()
-                + "}";
+        return "Door{" +
+                "id='" + id + '\'' +
+                ", closed=" + closed +
+                ", state=" + getStateName() +
+                '}';
     }
 
     public JSONObject toJson() {
-        // Converteix l'estat de la porta a JSON
         JSONObject json = new JSONObject();
         json.put("id", id);
         json.put("state", getStateName());
