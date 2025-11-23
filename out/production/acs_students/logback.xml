@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- ====== DIRECTORI DELS LOGS ====== -->
+    <property name="LOG_DIR" value="logs"/>
+
+    <!-- ========== APPENDER: CONSOLA ========== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========== APPENDER: FITXER TEXT ========== -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/app.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========== APPENDER: FITXER HTML ========== -->
+    <appender name="HTML" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/app.html</file>
+        <append>true</append>
+        <encoder class="ch.qos.logback.core.html.HTMLLayout"/>
+    </appender>
+
+    <!-- =====================================================
+         FITA 1  → (Activable/Desactivable)
+         Descomenta per activar logs de la Fita 1
+         ===================================================== -->
+    <!--
+    <logger name="FITA1" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+    -->
+
+    <!-- =====================================================
+         FITA 2  → (Activable/Desactivable)
+         Descomenta per activar logs de la Fita 2
+         ===================================================== -->
+    <!--
+    <logger name="FITA2" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+    -->
+
+    <!-- ========== ROOT LOGGER (ACTIU SEMPRE) ========== -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

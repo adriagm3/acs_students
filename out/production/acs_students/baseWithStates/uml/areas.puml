@@ -1,0 +1,26 @@
+@startuml
+package "Areas" {
+    abstract class Area {
+        +id: String
+        +name: String
+        +getDoorsGivingAccess()
+        +getSpaces()
+        +findAreaById()
+    }
+
+    class Partition {
+        -subAreas: List<Area>
+        +addSubArea()
+    }
+
+    class Space {
+        -doors: List<Door>
+        +addDoor()
+    }
+
+    Area <|-- Partition
+    Area <|-- Space
+    Partition "1" o-- "*" Area : subAreas
+    Space "1" o-- "*" Door : doors
+}
+@enduml
