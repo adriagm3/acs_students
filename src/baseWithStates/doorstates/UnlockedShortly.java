@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UnlockedShortly extends DoorState implements ClockObserver {
-
+//estat de la porta temporalment desbloquejada en comentaris al logger
     private static final Logger logger = LoggerFactory.getLogger(UnlockedShortly.class);
 
     private static final int TIMEOUT_SECONDS = 10; // temps abans de tornar a bloquejar

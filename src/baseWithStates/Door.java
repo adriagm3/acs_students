@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Door {
-
+//porta del sistema, conte estat octual i arees origen i destinacio
     private static final Logger logger = LoggerFactory.getLogger(Door.class);
 
     private final String id;       // Identificador únic de la porta

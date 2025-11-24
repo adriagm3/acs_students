@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Clock {
-
+    //representa rellotge del sistema envia ticks a tots els observadors
     // ───────────────────────────────
     // Singleton
     // ───────────────────────────────

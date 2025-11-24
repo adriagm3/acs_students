@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Unlocked extends DoorState {
-
+    //estat desbloquejat de la porta, pot obrir i tancarse pero nome bloquejar quan tancada
     private static final Logger logger = LoggerFactory.getLogger(Unlocked.class);
 
     public Unlocked(Door door) {

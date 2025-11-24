@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Locked extends DoorState {
-
+//estat bloquejat, esten DoorState heretant, sobrescriibim para comportament quan bloq
     private static final Logger logger = LoggerFactory.getLogger(Locked.class);
 
     public Locked(Door door) {
@@ -13,6 +13,7 @@ public class Locked extends DoorState {
         this.name = States.LOCKED; // Nom de l'estat
     }
 
+    //funcionas que canvien l¡estat de la porta posant missatge al logger
     @Override
     public void unlock() {
         door.setState(new Unlocked(door));
